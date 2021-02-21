@@ -1,0 +1,7 @@
+{
+  "name": "panda",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

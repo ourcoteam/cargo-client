@@ -1,0 +1,16 @@
+.profile-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    ion-avatar {
+        width: 40%;
+        height: auto;
+        img {}
+    }
+    ion-chip {
+        &.name {
+            font-size: larger;
+            font-weight: 800;
+        }
+    }
+}

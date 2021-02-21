@@ -1,0 +1,28 @@
+.data-grid {
+  text-align: start;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  h4 {
+    color: var(--ion-color-primary);
+  }
+  ion-label {
+    text-transform: uppercase;
+  }
+  p {
+    span.dimmed {
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+ion-footer {
+  ion-button {
+    display: block;
+    margin: 0;
+    border-radius: 0;
+    --border-radius: 0;
+    height: 45px;
+    --height: 45px;
+  }
+}

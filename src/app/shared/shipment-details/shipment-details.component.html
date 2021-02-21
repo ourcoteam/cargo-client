@@ -1,0 +1,217 @@
+<ion-header class="bg-header">
+    <ion-toolbar>
+        <ion-title>{{ _translate.instant('general.shipment_details') }}</ion-title>
+        <ion-button (click)="closeModal()" fill="clear" slot="end" color="light">
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <div class="data-grid">
+        <h4>{{ _translate.instant('general.shipment_info') }}</h4>
+        <ion-row>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.shipment_number') }}
+                </ion-label>
+                <p>{{ shData?.number }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.shipment_type') }}
+                </ion-label>
+                <p [innerHtml]="
+            shData?.type == 1
+              ? _translate.instant('general.send')
+              : _translate.instant('general.receive')
+          "></p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.package_type') }}
+                </ion-label>
+                <p>{{ shData?.packaging.name }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.status') }}
+                </ion-label>
+                <p>{{ shData?.status }}</p>
+            </ion-col>
+            <!-- <ion-col size="6">
+                <ion-label color="medium">Payment Type</ion-label>
+                <p [innerHTML]="shData?.payment_type == 1 ? 'Postpaid' : 'Prepaid'"></p>
+            </ion-col> -->
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.currency') }}
+                </ion-label>
+                <p>{{ shData?.currency_id.name }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.office') }}
+                </ion-label>
+                <p>{{ shData?.office.name }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.delivery_date') }}
+                </ion-label>
+                <p>{{ shData?.delivery_date }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.delivery_time') }}
+                </ion-label>
+                <p>{{ shData?.delivery_time }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.created_at') }}
+                </ion-label>
+                <p>{{ shData?.created_at }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.updated_at') }}
+                </ion-label>
+                <p>{{ shData?.updated_at }}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+
+    <div class="data-grid">
+        <h4>{{ _translate.instant('general.shipment_details') }}</h4>
+        <ion-row>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.payment_type') }}
+                </ion-label>
+                <p [innerHtml]="
+            shData?.payment_type == 1
+              ?_translate.instant('general.postpaid')
+              : _translate.instant('general.prepaid')
+          "></p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.currency') }}
+                </ion-label>
+                <p>{{ shData?.currency_id.name }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.courier">
+                <ion-label color="medium">{{ _translate.instant('general.courier') }}
+                </ion-label>
+                <p>{{ shData?.courier }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.courier_fees') }}
+                </ion-label>
+                <p>{{ shData?.courier_fee }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.customs_value') }}
+                </ion-label>
+                <p>{{ shData?.customs_value }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.package_fee">
+                <ion-label color="medium">{{ _translate.instant('general.package_fees') }}
+                </ion-label>
+                <p>{{ shData?.package_fee }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.return_courier_fee">
+                <ion-label color="medium">{{ _translate.instant('general.return_courier_fees') }}
+                </ion-label>
+                <p>{{ shData?.return_courier_fee }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.return_defray">
+                <ion-label color="medium">{{ _translate.instant('general.return_defray') }}
+                </ion-label>
+                <p>{{ shData?.return_defray }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.return_package_fee">
+                <ion-label color="medium">{{ _translate.instant('general.return_package_fee') }}
+                </ion-label>
+                <p>{{ shData?.return_package_fee }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.tax != 0">
+                <ion-label color="medium">{{ _translate.instant('general.tax') }}
+                </ion-label>
+                <p>{{ shData?.tax }}</p>
+            </ion-col>
+            <ion-col size="6" *ngIf="shData?.mode && shData?.mode != 0">
+                <ion-label color="medium">{{ _translate.instant('general.mode') }}
+                </ion-label>
+                <p>{{ shData?.mode }}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+
+    <div class="data-grid">
+        <h4>{{ _translate.instant('general.sender_details') }}</h4>
+        <ion-row>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.name') }}
+                </ion-label>
+                <p>{{ shData?.sender.name }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.mobile') }}
+                </ion-label>
+                <p>{{ shData?.sender.mobile }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.sender_address') }}
+                </ion-label>
+                <p>{{ shData?.sender_address.address }}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div class="data-grid" *ngIf="shData?.receiver">
+        <h4>{{ _translate.instant('general.receiver_details') }}</h4>
+        <ion-row>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.name') }}
+                </ion-label>
+                <p *ngIf="shData && shData.Received_By">{{ shData.Received_By }}</p>
+                <p *ngIf="shData && !shData.Received_By">{{ shData.receiver.name }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.mobile') }}
+                </ion-label>
+                <p>{{ shData?.receiver.mobile }}</p>
+            </ion-col>
+            <ion-col size="6">
+                <ion-label color="medium">{{ _translate.instant('general.receiver_address') }}
+                </ion-label>
+                <p>{{ shData?.receiver_address.address }}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div class="data-grid" *ngIf="shData?.notes">
+        <h4>
+            {{ _translate.instant('general.notes') }} ({{ shData?.notes.length }})
+        </h4>
+        <ion-row *ngFor="let note of shData?.notes">
+            <ion-col size="12">
+                <ion-label color="medium">{{ _translate.instant('general.by') }} {{ note.user }} - {{ note.date.date | date: 'short' }}
+                </ion-label>
+                <p>{{ note.note }}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+
+    <div class="data-grid" *ngIf="shData?.history">
+        <h4>
+            {{ _translate.instant('general.history') }} ({{ shData?.history.length }})
+        </h4>
+        <ion-row *ngFor="let note of shData?.history">
+            <ion-col size="12">
+                <ion-label color="medium">{{ _translate.instant('general.by') }} {{ note.user }} - {{ note.date.date | date: 'short' }}
+                </ion-label>
+                <p>{{ note.note }}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+
+
+    <!-- <div id="map_canvas" #map_canvas>
+        <ion-img src="/assets/img/marker.svg" id="DummyMarker"></ion-img>
+    </div> -->
+
+</ion-content>
+<ion-footer *ngIf="amount && amount != 0">
+    <ion-button (click)="payForShipment()">
+        <ion-icon name="receipt"></ion-icon>
+        <ion-label>{{_translate.instant('general.payForShipment')  }}</ion-label>
+    </ion-button>
+</ion-footer>

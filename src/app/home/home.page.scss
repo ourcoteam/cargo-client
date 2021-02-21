@@ -1,0 +1,87 @@
+ion-img.home-logo {
+    margin: 2vh auto;
+    height: 18vh;
+}
+
+ion-item.home-tracking {
+    margin: 10px 20px;
+    --border-radius: 25px;
+    --box-shadow: 0 5px 10px rgba(37, 104, 239, 0.59);
+    border-radius: 25px;
+    box-shadow: 0 5px 10px rgba(37, 104, 239, 0.59);
+    --highlight-color-focused: transparent;
+    margin-bottom: 2vh;
+    ion-input {
+        --placeholder-color: var(--ion-color-medium);
+        --placeholder-font-weight: 400;
+        font-size: 15px;
+        --placeholder-opacity: 0.8;
+    }
+    ion-icon.search {
+        font-size: 14px;
+        color: #cecece;
+        margin: 0 15px;
+    }
+}
+
+ion-segment.home-segment {
+    width: calc(100vw / 1.5);
+    ion-segment-button {
+        color: var(--ion-color-light);
+        opacity: 0.75;
+        margin: 0 15px;
+    }
+    ion-segment-button.segment-button-checked {
+        opacity: 1;
+    }
+}
+
+ion-fab {
+    bottom: -30px;
+    ion-fab-button {
+        outline: none;
+        font-size: 18px;
+        border: 5px solid #f7f7fb;
+        border-radius: 100%;
+        --background: #2568ef;
+        --box-shadow: 0 3px 10px rgba(37, 104, 239, 0.6);
+    }
+}
+
+ion-content {
+    --padding-top: 35px;
+    ion-card.white-card {
+        margin-bottom: 20px;
+        ion-card-title {
+            font-size: 16px;
+            font-weight: 400;
+        }
+        ion-card-subtitle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px 10px;
+            margin: 0;
+            color: var(--ion-color-dark);
+            border-radius: 0 0 0 10px;
+            font-size: 12px;
+            background: var(--ion-color-light);
+            &.in-transit {
+                background: #2568ef;
+                color: #fff;
+            }
+            &.Pending {
+                background: #2568ef;
+                color: #fff;
+            }
+            &.proccessing {
+                background: #2189f1;
+                color: #fff;
+            }
+            &.on-hold {
+                background: rgba(225, 42, 42, 0.75);
+                color: #fff;
+            }
+        }
+    }
+}

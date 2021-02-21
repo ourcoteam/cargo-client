@@ -1,0 +1,168 @@
+<ion-header class="bg-header">
+    <ion-toolbar *ngIf="!authService.isAuthenticated()">
+        <ion-button routerLink="/register" routerDirection="forward" color="light" fill="clear" slot="start">
+            {{_translate.instant('general.register')}}
+        </ion-button>
+        <ion-button routerLink="/login" routerDirection="forward" color="light" fill="clear" slot="end">
+            {{_translate.instant('general.login')}}
+        </ion-button>
+        <!-- <ion-title>home</ion-title> -->
+    </ion-toolbar>
+
+    <ion-img src="/assets/img/home_logo.svg" class="home-logo"></ion-img>
+    <ion-item class="home-tracking">
+        <ion-icon name="search" slot="start" class="search"></ion-icon>
+        <ion-input [placeholder]="_translate.instant('home.tracking_id')" [(ngModel)]="trackingID" (ionChange)="trackingChange()" debounce="200"></ion-input>
+        <ion-button slot="end" fill="clear" *ngIf="trackingID == ''" (click)="scanCode()">
+            <ion-icon color="primary" src="/assets/icons/code-scanning.svg" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" fill="clear" *ngIf="trackingID != '' && trackScanned" (click)="clearTracking()">
+            <ion-icon color="primary" name="close-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" fill="clear" *ngIf="trackingID != '' && trackScanned == false" (click)="trackOrder()">
+            {{_translate.instant('general.track_order')}}
+        </ion-button>
+    </ion-item>
+
+    <ion-segment class="home-segment" color="light" *ngIf="authService.isAuthenticated()" [(ngModel)]="currentTap" mode="md">
+        <ion-segment-button value="current" mode="md">
+            <ion-label>{{_translate.instant('home.current')}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="archive" mode="md">
+            <ion-label>{{_translate.instant('home.archived')}}</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+
+    <!-- fab placed to the top end -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="authService.isAuthenticated()">
+        <ion-fab-button  routerLink="/new-order" routerDirection="forward">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-header>
+
+<ion-content class="ion-padding gray-bg">
+    <div *ngIf="authService.isAuthenticated()" [ngSwitch]="currentTap">
+        <div *ngSwitchCase="'current'">
+            <ion-refresher slot="fixed" (ionRefresh)="reload($event, 'current')">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+            <ion-card class="white-card" *ngFor="let shipment of userShipments" button="true" (click)="shipmentDetail(shipment.number)">
+                <ion-card-header>
+                    <ion-card-title color="primary">
+                        {{shipment.number}}
+                    </ion-card-title>
+                    <ion-card-subtitle [class]="shipment.status">
+                        {{shipment.status}}
+                    </ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="time-line">
+                        <p class="step">
+                            {{_translate.instant('general.from')}}:
+                            <span>
+                {{shipment.sender_address.address | slice:0:50}}...
+              </span>
+                        </p>
+                        <p class="step">
+                            {{_translate.instant('general.to')}}:
+                            <span>{{shipment.sender_address.address | slice:0:50}}...</span>
+                        </p>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+            <ion-infinite-scroll threshold="2px" (ionInfinite)="loadMore($event, 'current')" *ngIf="archiveShipments?.length < totalCurrent">
+                <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="">
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </div>
+        <div *ngSwitchCase="'archive'">
+            <ion-refresher slot="fixed" (ionRefresh)="reload($event, 'archived')">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+            <ion-card class="white-card" *ngFor="let shipment of archiveShipments" button="true" (click)="shipmentDetail(shipment.number)">
+                <ion-card-header>
+                    <ion-card-title color="primary">
+                        {{shipment.number}}
+                    </ion-card-title>
+                    <ion-card-subtitle [class]="shipment.status">
+                        {{shipment.status}}
+                    </ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="time-line">
+                        <p class="step">
+                            {{_translate.instant('general.from')}}:
+                            <span>
+                {{shipment.sender_address.address | slice:0:50}}...
+              </span>
+                        </p>
+                        <p class="step">
+                            {{_translate.instant('general.to')}}:
+                            <span>{{shipment.sender_address.address | slice:0:50}}...</span>
+                        </p>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+            <ion-infinite-scroll threshold="10px" (ionInfinite)="loadMore($event, 'archived')" *ngIf="archiveShipments?.length < totalArchived">
+                <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="">
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </div>
+        <div *ngSwitchCase="'search'">
+            <ion-card class="white-card" *ngFor="let shipment of searched" button="true" (click)="shipmentDetail(shipment.number)">
+                <ion-card-header>
+                    <ion-card-title color="primary">
+                        {{shipment.number}}
+                    </ion-card-title>
+                    <ion-card-subtitle [class]="shipment.status">
+                        {{shipment.status}}
+                    </ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="time-line">
+                        <p class="step">
+                            {{_translate.instant('general.from')}}:
+                            <span>
+                {{shipment.sender_address.address | slice:0:50}}...
+              </span>
+                        </p>
+                        <p class="step">
+                            {{_translate.instant('general.to')}}:
+                            <span>{{shipment.sender_address.address | slice:0:50}}...</span>
+                        </p>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+
+    <div *ngIf="!authService.isAuthenticated() && trackScanned">
+        <div>
+            <ion-card class="white-card" *ngFor="let shipment of searched" button="true" (click)="shipmentDetail(shipment.number)">
+                <ion-card-header>
+                    <ion-card-title color="primary">
+                        {{shipment.number}}
+                    </ion-card-title>
+                    <ion-card-subtitle [class]="shipment.status">
+                        {{shipment.status}}
+                    </ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="time-line">
+                        <p class="step">
+                            {{_translate.instant('general.from')}}:
+                            <span>
+                {{shipment.sender_address.address | slice:0:50}}...
+              </span>
+                        </p>
+                        <p class="step">
+                            {{_translate.instant('general.to')}}:
+                            <span>{{shipment.sender_address.address | slice:0:50}}...</span>
+                        </p>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+</ion-content>

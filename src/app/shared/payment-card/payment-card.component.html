@@ -1,0 +1,28 @@
+<ion-header class="bg-header">
+  <ion-toolbar>
+      <ion-title>{{ _translate.instant('general.shipment_payment_details') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-row>
+    <ion-col size="6" *ngFor="let payment of view">
+      <ion-label color="medium">{{ _translate.instant(payment.name) }} </ion-label>
+      <p>{{ payment.amount }} {{shipment.currency_id.currency_symbol}}</p>
+    </ion-col>
+  </ion-row>
+  <br>
+  <br>
+  <ion-row>
+    <ion-col size="6">
+      <ion-label color="medium">{{ _translate.instant('general.total_amount') }} </ion-label>
+      <p>{{ totalAmount }} {{shipment.currency_id.currency_symbol}}</p>
+    </ion-col>
+    <!-- <ion-col size="6">
+      <ion-button (click)="doPay()">{{ _translate.instant('general.pay') }}</ion-button>
+    </ion-col> -->
+  </ion-row>
+  <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+
+</ion-content>
+
+

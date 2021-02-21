@@ -1,0 +1,57 @@
+<ion-header class="bg-header">
+    <ion-toolbar>
+        <ion-title>{{_translate.instant('general.notifications')}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list lines="none">
+        <ion-item class="white-card" *ngFor="let item of authService?.userNotifications" button="true" (click)="shipmentDetail(item.number, item.id)">
+            <ion-text slot="start">
+                {{item.number}}
+            </ion-text>
+            <ion-label>
+                <p [class]="item.read != 1 ? 'unread' : ''">{{item.content}}</p>
+            </ion-label>
+            <ion-text slot="end" class="ion-no-padding ion-text-end">
+                <span [class]="item.read != 1 ? 'unreaded' : ''"></span>
+            </ion-text>
+        </ion-item>
+    </ion-list>
+
+    <!-- <ion-card class="white-card" *ngFor="let item of authService?.userNotifications" button="true" (click)="shipmentDetail(item.number, item.id)">
+        <ion-card-content>
+            <ion-grid class="ion-no-padding">
+                <ion-row>
+                    <ion-col class="ion-no-padding" size="10">
+                        <p [class]="item.read != 1 ? 'unread' : ''">{{item.content}}</p>
+                    </ion-col>
+                    <ion-col size="2" class="ion-no-padding ion-text-end">
+                        <span [class]="item.read != 1 ? 'unreaded' : ''"></span>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>  -->
+
+    <p *ngIf="!authService.userNotifications  || ( authService.userNotifications && authService.userNotifications.length ==0 )" class="ion-text-center">
+        <ion-text color="medium">
+            {{_translate.instant('general.no_notifications')}}
+        </ion-text>
+    </p>
+
+
+    <!-- <p *ngIf="authService?.userNotifications.length ==0 || !authService?.userNotifications" class="ion-text-center">
+        <ion-text color="medium">
+            {{_translate.instant('general.no_notifications')}}
+        </ion-text>
+    </p> -->
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" *ngIf="authService.userNotifications && authService.userNotifications.length > 0 && authService?.userNotifications.length < authService.notificationsCount.all">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

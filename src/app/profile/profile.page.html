@@ -1,0 +1,45 @@
+<ion-header class="bg-header">
+    <ion-toolbar>
+        <ion-title>{{_translate.instant('general.profile')}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="profile-data">
+        <ion-avatar>
+            <img [src]="authService.userData?.avatar != null ? authService.userData?.avatar : '/assets/img/profile_image.svg'" />
+        </ion-avatar>
+        <ion-chip class="name" color="primary">
+            <ion-icon name="contact"></ion-icon>
+            <ion-label>{{authService.userData?.name}} {{authService.userData?.surname}}
+            </ion-label>
+        </ion-chip>
+        <ion-chip class="email" color="medium" outline="true">
+            <ion-icon name="mail"></ion-icon>
+            <ion-label>{{authService.userData?.email}}</ion-label>
+        </ion-chip>
+        <ion-chip class="phone" color="medium" outline="true">
+            <ion-icon name="phone-portrait"></ion-icon>
+            <ion-label>{{authService.userData?.mobile}}</ion-label>
+        </ion-chip>
+        <ion-chip class="wallet" color="medium" outline="true">
+            <ion-icon name="wallet"></ion-icon>
+            <ion-label>{{authService.userWallet?.wallet}}</ion-label>
+        </ion-chip>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-list lines="none">
+        <ion-item lines="none">
+            <ion-label> {{_translate.instant('general.language')}} </ion-label>
+            <ion-select [(ngModel)]="userLang" (ionChange)="changeLang()" interface="action-sheet">
+                <ion-select-option value="en">English</ion-select-option>
+                <ion-select-option value="ar">العربية</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item (click)="authService.logout()">
+            <ion-icon name="log-out" slot="end"></ion-icon>
+            <ion-label> {{_translate.instant('general.logout')}} </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-footer>
